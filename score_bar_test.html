@@ -1,0 +1,26 @@
+<html><head><script src="util.js"></script><script  src="score_bar.js"></script></head><body>
+	<link type="text/css" rel="stylesheet" href="score_bar.css" media="all">
+	<div id="scorehere" style="max-width:100%; width:600px; height:400px"></div>
+	<script>
+
+	addEventListener("load", function() {
+
+		window.sb = new score_bar();
+		sb.total = 10;
+		document.body.querySelector("#scorehere").appendChild(sb.el);
+
+
+	});
+
+	setTimeout(function() {
+		sb.score = 5;
+	}, 100);
+
+
+	setTimeout(function() {
+		sb.score = 10;
+	}, 1000);
+
+
+	</script>
+</body></html>

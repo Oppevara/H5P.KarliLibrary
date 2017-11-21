@@ -1,0 +1,19 @@
+{
+  "title": "Karli Library",
+  "majorVersion": 1,
+  "minorVersion": 0,
+  "patchVersion": 0,
+  "runnable": 0,
+  "author": "Karli Raudsepp",
+  "machineName": "H5P.KarliLibrary",
+  "preloadedJs": [ 
+    { "path" : "util.js" },
+    { "path" : "eventable.js" },
+    { "path" : "floater.js" },
+    { "path" : "score_bar.js" }
+  ],
+  "preloadedCss": [ 
+    { "path" : "floater.css" },
+    { "path" : "score_bar.css" }
+  ]
+}
