@@ -37,6 +37,7 @@ function score_bar(observe_el) {
 	this.reset_callbacks = [];
 
 	this.set_observable = function(el, reset_callback) {
+		this.observe_el.setAttribute("data-score_show", false);
 		el.setAttribute("data-score_answered", false);
 		el.setAttribute("data-score_correct", false);
 		var reset_id = this.reset_callbacks.length;
@@ -65,6 +66,16 @@ function score_bar(observe_el) {
 		this.mode = "count";
 		this.score = 0;
 		setTimeout(this.reset, 0);
+	}.bind(this));
+
+	this.el_show.addEventListener("click", function() {
+		var show = this.observe_el.getAttribute("data-score_show");
+		if (show == "true") {
+			this.observe_el.setAttribute("data-score_show", false);
+		} else {
+			this.observe_el.setAttribute("data-score_show", true);
+		}
+		
 	}.bind(this));
 
 	Object.defineProperty(this, "star", {

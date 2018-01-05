@@ -107,8 +107,8 @@ var floater = function(content_, title_, x_, y_, width_, height_) {
 
 	this.width = width_ || 400;
 	this.height = height_ || 300;
-	this.x = x_ || (screen.width / 2 - this.width / 2);
-	this.y = y_ || (screen.height / 2 - this.height / 2);
+	this.x = x_ || (window.innerWidth / 2 - this.width / 2);
+	this.y = y_ || (window.innerHeight / 2 - this.height / 2);
 	this.title = title_ || "";
 	this.content = content_;
 
