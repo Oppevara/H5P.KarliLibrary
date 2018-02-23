@@ -96,6 +96,19 @@ var floater = function(content_, title_, x_, y_, width_, height_) {
 		}
 	});
 
+	this.hide = function() {
+		this.el.style.visibility = "hidden";
+	}.bind(this);
+
+	this.show = function() {
+		this.el.style.visibility = "visible";
+	}.bind(this);
+
+	this.center = function() {
+		this.x = window.innerWidth / 2 - this.width / 2;
+		this.y = window.innerHeight / 2 - this.height / 2;	
+	}.bind(this);
+
 	this.remove = function() {
 		this.el.parentElement.removeChild(this.el);
 	}.bind(this);
