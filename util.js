@@ -17,6 +17,17 @@ var build = function(tag_name, class_name, parent, data) {
 	return el;
 };
 
+var bench_time = function(msg) {
+	var now = Date.now();
+	if ("t" in bench_time) {
+		var elapsed = now - bench_time["t"];
+		console.log(msg, elapsed);
+	} else {
+		if (msg !== undefined) console.log(msg);
+	}
+	bench_time["t"] = now;
+}
+
 var build_checkbox = function(label) {
 	var el = build("label", undefined, undefined, label);
 	var cb = build("input", undefined, el);
@@ -54,6 +65,10 @@ var build_dropdown = function(options) {
 	});
 
 	el.set_value = function(v) {
+		if (!(v in indices)) {
+			console.log("no such value: " + v);
+			return;
+		}
 		el.children[indices[v]].selected = true;
 	};
 
