@@ -1,11 +1,17 @@
 var build = function(tag_name, class_name, parent, data) {
 	var el;
+	var data_args = [];
+	for (var i = 3; i < arguments.length; i++) data_args.push(arguments[i]);
+
 	switch (tag_name) {
+		case "custom_input":
+			el = build_input(data_args);
+			break;
 		case "custom_dropdown":
-			el = build_dropdown(data);
+			el = build_dropdown(data_args);
 			break;
 		case "custom_checkbox":
-			el = build_checkbox(data);
+			el = build_checkbox(data_args);
 			break;
 		default:
 			el = document.createElement(tag_name);
@@ -15,6 +21,17 @@ var build = function(tag_name, class_name, parent, data) {
 	if (parent !== undefined) parent.appendChild(el);
 	
 	return el;
+};
+
+var parse_float = function(s) {
+	if (typeof s !== "string") return undefined;
+	var palette = "0123456789.";
+	var ss = "";
+	for (var i = 0; i < s.length; i++) {
+		if (palette.indexOf(s[i]) !== -1) ss += s[i];
+	}
+	if (ss.length == 0) return undefined;
+	return parseFloat(ss);
 };
 
 var bench_time = function(msg) {
@@ -28,14 +45,50 @@ var bench_time = function(msg) {
 	bench_time["t"] = now;
 }
 
-var build_checkbox = function(label) {
-	var el = build("label", undefined, undefined, label);
-	var cb = build("input", undefined, el);
-	cb.type = "checkbox";
+var build_input = function(data_args) {
+	var el = build("div");
+	var label = build("label", undefined, el);
+	var inp = build("input", undefined, el);
+
+	Object.defineProperty(el, "title", {
+		"get" : function() { return label.innerText === "" ? undefined : label.innerText; },
+		"set" : function(v) { label.innerText = v === undefined ? "" : v; }
+	});
+
+	Object.defineProperty(el, "value", {
+		"get" : function() { return inp.value === "" ? undefined : inp.value; },
+		"set" : function(v) { inp.value = v === undefined ? "" : v; }
+	});
+
+	var changed_event = new CustomEvent("changed");
+	inp.addEventListener("keyup", function(e) { el.dispatchEvent(changed_event); });
+	inp.addEventListener("mouseup", function(e) { el.dispatchEvent(changed_event); });
+
+	el.title = data_args[0];
+	el.value = data_args[1];
+
 	return el;
 }
 
-var build_dropdown = function(options) {
+var build_checkbox = function(data_args) {
+	var label = data_args[0];
+	var el = build("label", undefined, undefined, label);
+	var cb = build("input", undefined, el);
+	cb.type = "checkbox";
+
+	var changed_event = new CustomEvent("changed");
+	cb.addEventListener("mouseup", function(e) { el.dispatchEvent(changed_event); });
+
+	Object.defineProperty(el, "value", {
+		"get" : function() { return cb.checked },
+		"set" : function(v) { cb.checked = v }
+	});	
+
+	return el;
+}
+
+var build_dropdown = function(data_args) {
+	var options = data_args[0];
 	var el = build("select");
 	if (options === undefined || options === null) return el;
 
