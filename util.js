@@ -25,7 +25,7 @@ var build = function(tag_name, class_name, parent, data) {
 
 var parse_float = function(s) {
 	if (typeof s !== "string") return undefined;
-	var palette = "0123456789.";
+	var palette = "0123456789.-";
 	var ss = "";
 	for (var i = 0; i < s.length; i++) {
 		if (palette.indexOf(s[i]) !== -1) ss += s[i];
@@ -77,12 +77,15 @@ var build_checkbox = function(data_args) {
 	cb.type = "checkbox";
 
 	var changed_event = new CustomEvent("changed");
-	cb.addEventListener("mouseup", function(e) { el.dispatchEvent(changed_event); });
+	cb.addEventListener("click", function(e) { el.dispatchEvent(changed_event); });
+	el.addEventListener("click", function(e) { el.dispatchEvent(changed_event); });
 
 	Object.defineProperty(el, "value", {
-		"get" : function() { return cb.checked },
-		"set" : function(v) { cb.checked = v }
+		"get" : function() { return cb.checked; },
+		"set" : function(v) { cb.checked = v; }
 	});	
+
+	el.value = data_args[1];
 
 	return el;
 }
