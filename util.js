@@ -171,6 +171,16 @@ var random_string = function(n) {
 	return s;
 };
 
+function utf8_to_b64(utf8) {
+	return btoa(unescape(encodeURIComponent(utf8)));
+}
+
+function b64_to_utf8(b64) {
+	return decodeURIComponent(escape(atob(b64)));
+}
+
+//	saving stuff
+
 var h5p_get_data_obj = function(s) {
 	if (s === undefined) return undefined;
 	if (s.length > 0 && (s[0] == "[" || s[0] == "{")) {
@@ -181,15 +191,30 @@ var h5p_get_data_obj = function(s) {
 		return h5p_get_data_obj_v1(s);
 	}
 
+	if (s.length >= 3 && s.substring(0, 3) == "v2_") {
+		return h5p_get_data_obj_v2(s);
+	}
+
 	console.log("Corrputed or unknown data format");
 	return undefined;
 };
 
 
-
 var h5p_get_data_str = function(o) {
-	return h5p_get_data_str_v1(o);
+	return h5p_get_data_str_v2(o);
 }
+
+var h5p_get_data_obj_v2 = function(s) {
+	return JSON.parse(b64_to_utf8(s.substring(3)));
+}
+
+var h5p_get_data_str_v2 = function(o) {
+	if (o === undefined) return undefined;
+	return "v2_" + utf8_to_b64(JSON.stringify(o));
+}
+
+
+//	old save formats
 
 var h5p_get_data_obj_v1 = function(s) {
 	return JSON.parse(atob(s.substring(3)));
@@ -200,8 +225,6 @@ var h5p_get_data_str_v1 = function(o) {
 	return "v1_" + btoa(JSON.stringify(o));
 };
 
-
-//	for historic reference
 var h5p_get_data_obj_v0 = function(s) {
 	s = s.replace(new RegExp(/&quot;/, 'g'), "\"");
 	s = s.replace(new RegExp(/&lt;/, 'g'), "<");
