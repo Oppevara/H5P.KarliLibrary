@@ -257,3 +257,10 @@ function xml_to_doc(xml) {
 function doc_to_xml(doc) {
 	return (new XMLSerializer()).serializeToString(doc);
 }
+
+function schedule_recall(args, ctx_this, timeout) {
+	if (timeout === undefined) timeout = 100;
+	setTimeout(function() { args.callee.apply(ctx_this, args); }, timeout);
+}
+
+
