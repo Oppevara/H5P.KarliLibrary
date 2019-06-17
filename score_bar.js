@@ -6,9 +6,9 @@ function score_bar(observe_el) {
 	this.el_inner = build("div", "inner", this.el);
 	this.el_score = build("div", "val_score", this.el_inner, 0);
 	this.el_total = build("div", "val_total", this.el_inner, 0);
-	this.el_show = build("div", "button show", this.el, "Show solution");
-	this.el_check = build("div", "button check", this.el, "Check");
-	this.el_retry = build("div", "button retry", this.el, "Retry");
+	this.el_show = build("div", "button show", this.el, "Näita vastust");
+	this.el_check = build("div", "button check", this.el, "Kontrolli");
+	this.el_retry = build("div", "button retry", this.el, "Proovi uuesti");
 
 	this.el_star = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 	this.el_star.setAttribute("class", "star");
@@ -23,7 +23,7 @@ function score_bar(observe_el) {
 		var checkables = this.observe_el.querySelectorAll("[data-score_correct]");
 		for (var i = 0; i < checkables.length; i++) {
 			var checkable = checkables[i];
-			
+
 		}
 	}.bind(this);
 
@@ -75,7 +75,7 @@ function score_bar(observe_el) {
 		} else {
 			this.observe_el.setAttribute("data-score_show", true);
 		}
-		
+
 	}.bind(this));
 
 	Object.defineProperty(this, "star", {
@@ -125,7 +125,3 @@ function score_bar(observe_el) {
 	this.total = 0;
 	this.star = false;
 }
-
-
-
-
